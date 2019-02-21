@@ -23,7 +23,7 @@
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
-            <version>4.2.2</version>
+            <version>4.3.4</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
@@ -41,7 +41,7 @@
         <dependency>
             <groupId>com.aliyun.openservices</groupId>
             <artifactId>tablestore</artifactId>
-            <version>4.7.4</version>
+            <version>4.8.0</version>
         </dependency>
 
         <dependency>
