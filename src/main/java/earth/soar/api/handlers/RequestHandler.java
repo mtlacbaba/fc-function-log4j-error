@@ -6,6 +6,9 @@ import com.aliyun.fc.runtime.Context;
 import com.aliyun.fc.runtime.Credentials;
 import com.aliyun.fc.runtime.StreamRequestHandler;
 
+import com.aliyuncs.DefaultAcsClient;
+import com.aliyuncs.profile.DefaultProfile;
+import com.aliyuncs.profile.IClientProfile;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -20,9 +23,12 @@ public class RequestHandler implements StreamRequestHandler {
     @Override
     public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
         try {
-            SyncClient syncClient = getSyncClient(context.getExecutionCredentials(), "http://endpoint", "otsinstance");
-            GetRowResponse rowResponse = syncClient.getRow(userGetRowRequest("tableName", "userId"));
-            JSONObject resObj = new JSONObject(rowResponse);
+            Credentials c = context.getExecutionCredentials();
+            DefaultProfile.addEndpoint("ap-southeast-1", "Dm", "dm.ap-southeast-1.aliyuncs.com");
+            IClientProfile profile = DefaultProfile.getProfile("ap-southeast-1", c.getAccessKeyId(), c.getAccessKeySecret(), c.getSecurityToken());
+            DefaultAcsClient client = new DefaultAcsClient(profile);
+            DefaultProfile p = client.getProfile();
+            JSONObject resObj = new JSONObject(p);
             context.getLogger().debug(resObj.toString());
             writeResponse200(resObj, outputStream);
         } catch (Exception e){
