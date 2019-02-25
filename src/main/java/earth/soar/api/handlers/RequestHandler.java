@@ -1,7 +1,5 @@
 package earth.soar.api.handlers;
 
-import com.alicloud.openservices.tablestore.SyncClient;
-import com.alicloud.openservices.tablestore.model.*;
 import com.aliyun.fc.runtime.Context;
 import com.aliyun.fc.runtime.Credentials;
 import com.aliyun.fc.runtime.StreamRequestHandler;
@@ -34,24 +32,6 @@ public class RequestHandler implements StreamRequestHandler {
         } catch (Exception e){
             writeErrorResponse(e, outputStream);
         }
-    }
-
-    private static SyncClient getSyncClient(Credentials credentials, String endpoint, String otsInstance){
-        return new SyncClient(endpoint, credentials.getAccessKeyId(), credentials.getAccessKeySecret(), otsInstance, credentials.getSecurityToken());
-    }
-
-    public static GetRowRequest userGetRowRequest(String tableName, String userId) {
-        PrimaryKey primaryKey = getPrimaryKeyUserId(userId);
-        SingleRowQueryCriteria criteria = new SingleRowQueryCriteria(tableName, primaryKey);
-        // Set the latest version to be read.
-        criteria.setMaxVersions(1);
-        return new GetRowRequest(criteria);
-    }
-
-    private static PrimaryKey getPrimaryKeyUserId(String userId) {
-        PrimaryKeyBuilder primaryKeyBuilder = PrimaryKeyBuilder.createPrimaryKeyBuilder();
-        primaryKeyBuilder.addPrimaryKeyColumn("user_id", PrimaryKeyValue.fromString(userId));
-        return primaryKeyBuilder.build();
     }
 
     private void writeResponse200(JSONObject body, OutputStream stream) throws IOException {
