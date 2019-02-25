@@ -20,18 +20,13 @@ public class RequestHandler implements StreamRequestHandler {
 
     @Override
     public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
-        try {
-            Credentials c = context.getExecutionCredentials();
-            DefaultProfile.addEndpoint("ap-southeast-1", "Dm", "dm.ap-southeast-1.aliyuncs.com");
-            IClientProfile profile = DefaultProfile.getProfile("ap-southeast-1", c.getAccessKeyId(), c.getAccessKeySecret(), c.getSecurityToken());
-            DefaultAcsClient client = new DefaultAcsClient(profile);
-            DefaultProfile p = client.getProfile();
-            JSONObject resObj = new JSONObject(p);
-            context.getLogger().debug(resObj.toString());
-            writeResponse200(resObj, outputStream);
-        } catch (Exception e){
-            writeErrorResponse(e, outputStream);
-        }
+        Credentials c = context.getExecutionCredentials();
+        DefaultProfile.addEndpoint("ap-southeast-1", "Dm", "dm.ap-southeast-1.aliyuncs.com");
+        IClientProfile profile = DefaultProfile.getProfile("ap-southeast-1", c.getAccessKeyId(), c.getAccessKeySecret(), c.getSecurityToken());
+        DefaultAcsClient client = new DefaultAcsClient(profile);
+        DefaultProfile p = client.getProfile();
+        JSONObject resObj = new JSONObject(p);
+        writeResponse200(resObj, outputStream);
     }
 
     private void writeResponse200(JSONObject body, OutputStream stream) throws IOException {
